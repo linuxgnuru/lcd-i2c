@@ -16,6 +16,9 @@ const int D1 = 12;
 const int D2 = 13;
 const int D3 = 6;
 
+// Reverse the data; i.e. 255 becomes 0.
+// I did this because it didn't make sense to me
+// to have 255 mean complete darkness
 int rev(int val)
 { 
 	return abs(val - 255);
@@ -27,10 +30,10 @@ int main(int argc, char **argv)
 	useconds_t delay = 2000;
 	char *dev = "/dev/i2c-1";
 	int r, fd;
-	int addr = 0x4d;
+	int addr = 0x48;
 	int lcdFD;
 	int new_val;
-	int i, j;
+	int i;
 
 	// try to connect to display
 	if (wiringPiSetup() < 0)
@@ -47,7 +50,6 @@ int main(int argc, char **argv)
 	}
 	r = ioctl(fd, I2C_SLAVE, addr);
 	if (r < 0) perror("Selecting i2c device\n");
-	j = 0;
 	for (;;)
 	{
 		// the read is always one step behind the selected input
